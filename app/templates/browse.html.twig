@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Browse {{ category ? category : 'All Categories' }}</h1>
+
+    {% if category %}
+        <a class="btn btn-info" style="margin-top: 20px;" href="{{ path('app_browse') }}">Go back</a>
+    {% endif %}
+    <h2 class="mt-5 mb-4">Filter by Category</h2>
+    <ul class="category-list ps-0 mt-2 mb-3">
+        <li class="d-inline">
+            <a class="btn btn-primary btn-sm" href="{{ path('app_browse', {
+                slug: 'dairy'
+            }) }}">Dairy</a>
+        </li>
+        <li class="d-inline">
+            <a class="btn btn-primary btn-sm" href="{{ path('app_browse', {
+                slug: 'frozen'
+            }) }}">Frozen</a>
+        </li>
+        <li class="d-inline">
+            <a class="btn btn-primary btn-sm" href="{{ path('app_browse', {
+                slug: 'vegetables'
+            }) }}">Vegetables</a>
+        </li>
+    </ul>
+
+    <div>
+        <h2 class="mt-5">Products</h2>
+        <div class="container">
+            <div class="row">
+                {% for product in pager %}
+                    <div class="col-md-4">
+                        <div class="card mb-4"">
+                            <img src=" {{ product.imageUrl(400) }}" alt="{{ product.name }}" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">{{ product.name[:30] }}</h5>
+                                <p class="card-text text-dark">Categroy: {{ product.category }}</p>
+                                <p class="card-text text-dark">SKU: {{ product.sku }}</p>
+{#                                <p class="card-text text-dark">Id: {{ product.id }}</p>#}
+                                <div class="d-flex justify-content-between align-item-center">
+                                    <a href="{{ path('app_product_show', {slug: product.slug}) }}" class="btn btn-dark">View details</a>
+                                    <span class="h5 mt-auto text-dark product-price-tag">{{ product.price }} €</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {{ pagerfanta(pager) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

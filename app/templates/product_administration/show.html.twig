@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="text-center mt-5 mb-3">Show Product</h2>
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-outline-info float-right" href="{{ path('app_product_administration_index') }}">
+                    Back To List
+                </a>
+            </div>
+            <div class="card-body">
+                <b class="text-muted">Name:</b>
+                <p class="text-dark">{{ product.name }}</p>
+                <b class="text-muted">Sku:</b>
+                <p class="text-dark">{{ product.sku }}</p>  
+                <b class="text-muted">Price:</b>
+                <p class="text-dark">{{ product.price }}</p>  
+                <b class="text-muted">Category:</b>
+                <p class="text-dark">{{ product.category }}</p>
+                <b class="text-muted">Date Created:</b>
+                <p class="text-dark">{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+                <b class="text-muted">Date Updated:</b>
+                <p class="text-dark">{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</p>
+            </div>
+            <form method="post" action="{{ path('app_product_administration_delete', {'id': product.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                <a
+                        class="btn btn-outline-success mt-2"
+                        href="{{ path('app_product_administration_edit', {'id': product.id}) }}">
+                    Edit
+                </a>
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                <button class="btn btn-outline-danger mt-2">Delete</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

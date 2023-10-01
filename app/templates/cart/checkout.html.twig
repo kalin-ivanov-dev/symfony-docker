@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        <h1>Your Order</h1>
+
+        <div class="row mt-4">
+
+
+            <!-- List of items -->
+
+            <div class="col-md-8">
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        {% for item in items %}
+                            <li class="list-group-item d-flex">
+                                <div class="flex-fill mr-2" style="margin-right: 15px">
+                                    <img src="{{ item.getimageUrl(300) }}" width="64" alt="Product image">
+                                </div>
+                                <div class="flex-fill mr-2" style="margin-right: 5px">
+                                    <h5 class="mt-0 mb-0">{{ item.name }}</h5>
+                                    <small><b>Category:</b> {{ item.category[:50] }}</small>
+                                    <small><b>SKU:</b> {{ item.sku[:50] }}</small>
+                                    <small><b>Ordered Quantity:</b> {{ item.quantity }}</small>
+                                </div>
+                                <div class="flex-fill mr-2 text-right">
+                                    <b>{{ item.price }} €</b>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- Summary -->
+            <div class="col-md-4">
+                <div class="card mt-4 mt-md-0">
+                    <h5 class="card-header bg-dark text-white">Summary</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div><b>Total</b></div>
+                            <span><b>{{ order.totalValue }} €</b></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{{ form_start(form) }}
+
+ {% for child in form.children %}
+     {# Display the errors of the form item #}
+     {%for error in child.vars.errors%}
+         <li>{{error.message}}</li>
+     {%endfor%}
+ {%endfor%}
+
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+<div class="form-group" style="color:black;">
+    {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group" style="color:black;">
+    {{ form_row(form.sku, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group" style="color:black;">
+    {{ form_row(form.price, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group" style="color:black;">
+    {{ form_row(form.category, {'attr': {'class': 'form-control'}}) }}
+</div>
+{{ form_row(form._token) }}
+<button class="btn {{ button_color|default('btn-outline-primary') }}  mt-3">{{ button_label|default('Save Product') }}</button>
+
+{{ form_end(form,{'render_rest': false})  }}
+

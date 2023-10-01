@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }} Mix{% endblock %}
+
+{% block body %}
+{#    <div class="container">#}
+{#        <h1 class="d-inline me-3">{{ product.name }}</h1>#}
+{#        <div class="row mt-5">#}
+{#            <div class="col-12 col-md-4">#}
+{#                <img src="{{ product.imageUrl(300) }}" alt="Product cover">#}
+{#            </div>#}
+{#            <div class="col-12 col-md-8 ps-5">#}
+{#                <h2 class="mb-4">SKU: {{ product.sku }}</h2>#}
+{#                <p>Price: {{ product.price }}</p>#}
+{#                <p>Cateogry: {{ product.category }}</p>#}
+{#                <form action="{{ path('app_product_addToCart', {id: product.id }) }}" method="POST">#}
+{#                    <button#}
+{#                            type="submit"#}
+{#                            class="btn btn-outline-primary"#}
+{#                    >#}
+{#                        {% include('/product/_addToCart.html.twig') %}#}
+{#                    </button>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+    
+    <div class="container">
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="row mt-3 mb-4">
+            <div class="col-md-4">
+                <img src="{{ product.imageUrl(300) }}" alt="{{ product.name }}" class="img-fluid" style="border-radius: 10px">
+            </div>
+            <div class="col-md-8">
+                <h1 class="mt-4 mt-md-0">{{ product.name }}</h1>
+                <h2>{{ product.price }} €</h2>
+                <b>SKU:</b> {{ product.sku }}
+                <b>Category: </b>{{ product.category }}
+                <hr>
+{#                <form class="mt-4 p-4 bg-light" method="post">#}
+{#                    <div class="form-group">#}
+{#                        <label for="quantity text-dark">Quantity</label>#}
+{#                        <input type="number" class="form-control" id="quantity">#}
+{#                    </div>#}
+{#                    <button class="btn btn-warning">Add to Cart</button>#}
+{#                </form>#}
+
+                {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-secondary'}}) }}
+                <div class="form-group">
+                    {{ form_label(form.quantity) }}
+                    {{ form_widget(form.quantity, {
+                        'attr': {
+                            'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid')
+                        }
+                    }) }}
+                    <div class="invalid-feedback">
+                        {{ form_errors(form.quantity) }}
+                    </div>
+                </div>
+                {{ form_widget(form.add, {'attr': {'class': 'btn btn-warning w-25','style' : 'margin-top:10px'}}) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
