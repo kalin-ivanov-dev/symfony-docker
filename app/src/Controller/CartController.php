@@ -8,6 +8,7 @@ use App\Form\CartType;
 use App\Manager\CartManager;
 use App\Repository\CartRepository;
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,21 +37,35 @@ class CartController extends AbstractController
         ]);
     }
 
+    private function getOrderItemsData(Collection $orderDetails):array
+    {
+        $items = [];
+        foreach ($orderDetails as $key=>$orderDetail){
+            $items[$key]['imageUrl'] = $orderDetail->getProduct()->getImageUrl(300);
+            $items[$key]['name'] = $orderDetail->getProduct()->getName();
+            $items[$key]['category'] = $orderDetail->getProduct()->getCategory();
+            $items[$key]['sku'] = $orderDetail->getProduct()->getSku();
+            $items[$key]['price'] = $orderDetail->getTotalValue();
+            $items[$key]['unitPrice'] = $orderDetail->getProduct()->getPrice();
+            $items[$key]['quantity'] = $orderDetail->getQuantity();
+            $items[$key]['specialOffer'] = $orderDetail->getProduct()->getSpecialPrices()->first();
+        }
+        
+        return $items;
+    }
     #[Route('/checkout/{cartId}', name: 'checkout')]
-    public function checkout(int $cartId,CartManager $cartManager,EntityManagerInterface $entityManager,OrderRepository $orderRepository): Response
+    public function checkout(int $cartId,CartManager $cartManager,EntityManagerInterface $entityManager,OrderRepository $orderRepository,Request $request): Response
     {
         $existingOrder = $orderRepository->findByCartId($cartId);
         if(isset($existingOrder)){
-            return $this->redirectToRoute('app_browse');
+        
+            // If you want to check the order again use a special query parameter 
+            // example: /checkout/5?accessOrder=1
+            if((int)$request->query->get('accessOrder') !== 1)
+                return $this->redirectToRoute('app_browse');
 //            $cart = $cartrepository->find($existingOrder->getCartEntry());
-            $orderDetails = $existingOrder->getOrderDetails();
-            $items = [];
-            foreach ($orderDetails as $key=>$orderDetail){
-                $items[$key] = $orderDetail->getProduct();
-                $items[$key]->setPrice($orderDetail->getTotalValue()) ;
-                $items[$key]->quantity = $orderDetail->getQuantity();
-            }
-         
+           
+            $items = $this->getOrderItemsData($existingOrder->getOrderDetails());
             return $this->render('cart/checkout.html.twig', [
                 'items' => $items,
                 'order' => $existingOrder,
@@ -81,9 +96,14 @@ class CartController extends AbstractController
             $entityManager->persist($orderDetail);
             $entityManager->flush();
 
-            $items[$key] = $orderDetail->getProduct();
-            $items[$key]->setPrice($orderDetail->getTotalValue()) ;
-            $items[$key]->quantity = $orderDetail->getQuantity();
+            $items[$key]['imageUrl'] = $orderDetail->getProduct()->getImageUrl(300);
+            $items[$key]['name'] = $orderDetail->getProduct()->getName();
+            $items[$key]['category'] = $orderDetail->getProduct()->getCategory();
+            $items[$key]['sku'] = $orderDetail->getProduct()->getSku();
+            $items[$key]['price'] = $orderDetail->getTotalValue();
+            $items[$key]['unitPrice'] = $orderDetail->getProduct()->getPrice();
+            $items[$key]['quantity'] = $orderDetail->getQuantity();
+            $items[$key]['specialOffer'] = $orderDetail->getProduct()->getSpecialPrices()->first();
         }
         
         $cart->setStatus('order');
