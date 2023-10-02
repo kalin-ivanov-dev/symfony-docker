@@ -18,13 +18,28 @@
                         {% for item in items %}
                             <li class="list-group-item d-flex">
                                 <div class="flex-fill mr-2" style="margin-right: 15px">
-                                    <img src="{{ item.getimageUrl(300) }}" width="64" alt="Product image">
+                                    <img src="{{ item.imageUrl }}" width="64" alt="Product image">
                                 </div>
-                                <div class="flex-fill mr-2" style="margin-right: 5px">
+                                <div class="flex-fill mr-2" style="margin-right: 5px;width: 700px">
                                     <h5 class="mt-0 mb-0">{{ item.name }}</h5>
                                     <small><b>Category:</b> {{ item.category[:50] }}</small>
                                     <small><b>SKU:</b> {{ item.sku[:50] }}</small>
                                     <small><b>Ordered Quantity:</b> {{ item.quantity }}</small>
+                                    <div style="margin-top: 3px">
+                                        <small style="padding-right: 10px"><b>Unit Price:</b>
+                                            <span style="padding: 5px;background: #21940b;border-radius: 8px;color: white;">
+                                                   {{ item.unitPrice }} €
+                                                </span>
+                                        </small>
+                                        {% if  item.specialOffer %}
+                                            <small><b>Special offer: </b>
+                                                <span style="padding: 5px;background: #e05733;border-radius: 8px;color: white;">
+                                                   {{ item.specialOffer.getQuantity() }}  for
+                                                    {{ item.specialOffer.getPrice() }} €
+                                                </span>
+                                            </small>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 <div class="flex-fill mr-2 text-right">
                                     <b>{{ item.price }} €</b>
