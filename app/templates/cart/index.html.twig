@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <h1>Your Cart</h1>
         {% if cart.items.count > 0 %}
-            <div class="row mt-4">
+            <div class="row mt-4" id="cartSummary">
                 
                 <!-- List of items -->
                 <div class="col-md-8">
@@ -31,7 +31,7 @@
                                             <small><b>Category:</b> {{ item.vars.data.product.category[:50] }}</small>
                                             <small><b>SKU:</b> {{ item.vars.data.product.sku[:50] }}</small>
                                             <small><b>Unit Price:</b>
-                                                <span style="padding: 5px;background: #21940b;border-radius: 8px;color: white;">
+                                                <span class="cartItemUnitPrice">
                                                    {{ item.vars.data.product.getPrice() }} €
                                                 </span>
                                             </small>
@@ -39,7 +39,7 @@
                                         <div>
                                             {% if  item.vars.data.product.getSpecialPrices().first() %}
                                                 <small><b>Special offer: </b>
-                                                    <span style="padding: 5px;background: #e05733;border-radius: 8px;color: white;">
+                                                    <span class="cartItemSpecialOffer">
                                                    {{ item.vars.data.product.getSpecialPrices().first().getQuantity() }}  for
                                                     {{ item.vars.data.product.getSpecialPrices().first().getPrice() }} €
                                                 </span>

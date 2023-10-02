@@ -57,8 +57,37 @@ body {
 }
 
 
+#cartSummary .cartItemUnitPrice,
+#orderSummary .orderItemUnitPrice{
+    padding: 5px;
+    background: #21940b;
+    border-radius: 8px;
+    color: white;
+    transition: ease-in-out 0.2s;
+}
+
+#cartSummary .cartItemUnitPrice:hover,
+#orderSummary .orderItemUnitPrice:hover
+{
+    background: #21940bbd;
+    border-radius: 2px;
+}
 
 
+#cartSummary .cartItemSpecialOffer,
+#orderSummary .orderItemSpecialOffer{
+    padding: 5px;
+    background: #e05733;
+    border-radius: 8px;
+    color: white;
+    transition: ease-in-out 0.2s;
+}
+
+#cartSummary .cartItemSpecialOffer:hover,
+#orderSummary .orderItemSpecialOffer:hover{
+    background: #e05733cf;
+    border-radius: 2px;
+}
 
 
 

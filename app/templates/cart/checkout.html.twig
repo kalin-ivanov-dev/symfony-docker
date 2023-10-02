@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="container mt-4">
+    <div class="container mt-4" id="orderSummary">
         <h1>Your Order</h1>
 
         <div class="row mt-4">
@@ -27,13 +27,13 @@
                                     <small><b>Ordered Quantity:</b> {{ item.quantity }}</small>
                                     <div style="margin-top: 3px">
                                         <small style="padding-right: 10px"><b>Unit Price:</b>
-                                            <span style="padding: 5px;background: #21940b;border-radius: 8px;color: white;">
+                                            <span class="orderItemUnitPrice">
                                                    {{ item.unitPrice }} €
-                                                </span>
+                                            </span>
                                         </small>
                                         {% if  item.specialOffer %}
                                             <small><b>Special offer: </b>
-                                                <span style="padding: 5px;background: #e05733;border-radius: 8px;color: white;">
+                                                <span  class="orderItemSpecialOffer">
                                                    {{ item.specialOffer.getQuantity() }}  for
                                                     {{ item.specialOffer.getPrice() }} €
                                                 </span>
