@@ -76,9 +76,13 @@ class OrderItem
         $totalPrice = 0;
         $totalQnt = $this->getQuantity();
         $productSpecialPrice = $this->getProduct()->getSpecialPrices()->first();
+       
         if($productSpecialPrice !== false && $totalQnt >= $productSpecialPrice->getQuantity()){
-            $totalQnt -= $productSpecialPrice->getQuantity();
-            $totalPrice += $productSpecialPrice->getPrice() ;
+            $newTotalQuantity = $totalQnt % $productSpecialPrice->getQuantity();
+            $quantityRemainder  = floor($totalQnt / $productSpecialPrice->getQuantity());
+            $totalQnt = $newTotalQuantity;
+//            dump('test',$quantityRemainder,$newTotalQuantity);
+            $totalPrice += $productSpecialPrice->getPrice() * $quantityRemainder;
         }
         $totalPrice += $this->getProduct()->getPrice() * $totalQnt;
         return $totalPrice;
